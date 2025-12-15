@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MTL-PORL - IIT BHU</title>
+
+    <style>
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background-color: #fff;
+        color: #222;
+        line-height: 1.6;
+      }
+
+      header {
+        text-align: center;
+        background: #ffe6f0;
+        padding: 1.5rem 1rem;
+        border-bottom: 3px solid #ffb6c1;
+      }
+
+      header img {
+        width: 80px;
+        display: block;
+        margin: 0 auto 0.5rem;
+      }
+
+      header h1 {
+        color: #cc3366;
+        font-size: 1.6rem;
+        margin: 0;
+      }
+
+      .section {
+        padding: 1.5rem;
+        max-width: 900px;
+        margin: auto;
+      }
+
+      .two-column {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .brief,
+      .video {
+        background: #fff0f6;
+        padding: 1rem;
+        border-radius: 12px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      iframe {
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: 12px;
+        border: none;
+      }
+
+      .download-btn {
+        display: inline-block;
+        background: #ff99c8;
+        color: #fff;
+        font-weight: 600;
+        text-decoration: none;
+        padding: 0.8rem 1.4rem;
+        border-radius: 8px;
+        margin-top: 1rem;
+        text-align: center;
+        transition: all 0.2s ease-in-out;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .download-btn:hover {
+        background: #ff6fa5;
+        transform: translateY(-2px);
+      }
+
+      @media (min-width: 768px) {
+        .two-column {
+          flex-direction: row;
+        }
+
+        .brief,
+        .video {
+          flex: 1;
+        }
+      }
+
+      h2 {
+        color: #cc3366;
+        border-left: 5px solid #ff99c8;
+        padding-left: 0.5rem;
+      }
+
+      .images {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .images img {
+        width: 100%;
+        background: #fff;
+        border-radius: 12px;
+        padding: 0.5rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        cursor: pointer;
+        display: block;
+      }
+
+      .images img:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .app-images {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .app-images img {
+        width: 100%;
+        background: #fff;
+        border-radius: 12px;
+        padding: 0.5rem;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        cursor: pointer;
+        display: block;
+      }
+
+      .app-images img:hover {
+        transform: scale(1.03);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Lightbox Styles */
+      .lightbox {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        padding: 1rem;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(255, 230, 240, 0.95);
+        justify-content: center;
+        align-items: center;
+        animation: fadeIn 0.3s ease-in-out;
+      }
+
+      .lightbox img {
+        max-width: 95%;
+        max-height: 85vh;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        background: #fff;
+        padding: 0.5rem;
+      }
+
+      .close {
+        position: fixed;
+        top: 20px;
+        right: 25px;
+        color: #cc3366;
+        font-size: 2rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: color 0.2s ease;
+      }
+
+      .close:hover {
+        color: #ff6fa5;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      footer {
+        text-align: center;
+        padding: 1rem;
+        background: #ffe6f0;
+        color: #cc3366;
+        font-size: 0.9rem;
+        margin-top: 1.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- =========================
+         HEADER
+    ========================== -->
+    <header>
+      <img
+        src="https://www.iitbhu.ac.in/contents/iitbhu/img/other/iit_logo_original.png"
+        alt="IIT BHU Logo"
+      />
+
+      <h1>
+        MTL-PORL – Multi-Task Learner using Pareto Optimization &amp;
+        Refresh Learning
+      </h1>
+    </header>
+
+
+    <!-- =========================
+         FIELD / VIDEO
+    ========================== -->
+    <section class="section two-column">
+
+      <div class="brief">
+        <h2>Field of the Invention</h2>
+
+        <p>
+          The work focuses on Artificial Intelligence and Computational Drug
+          Discovery, particularly Continual Learning for Molecular Property
+          Prediction using transformer-based molecular language models.
+          It introduces a Multi-Task Learning framework combining
+          <strong>Pareto Optimization (PO)</strong> with
+          <strong>Refresh Learning (RL)</strong> to mitigate catastrophic
+          forgetting during sequential learning across molecular property
+          prediction tasks.
+        </p>
+      </div>
+
+      <div class="video">
+
+        <iframe
+          src="https://www.youtube.com/embed/q1ipYDkb0KM"
+          allowfullscreen>
+        </iframe>
+
+        <a href="MTL-PORL.apk" class="download-btn" download>
+          ⬇ Download MTL-PORL Prototype (APK)
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         OVERVIEW
+    ========================== -->
+    <section class="section">
+
+      <h2>Invention Overview</h2>
+
+      <p>
+        MTL-PORL is a Continual Learning framework for molecular property
+        prediction designed to enable a model to learn sequential tasks while
+        retaining useful knowledge from previously learned tasks.
+      </p>
+
+      <p>
+        The framework combines a bounded memory buffer with
+        <strong>Refresh Learning</strong>, periodically revisiting
+        representative samples from previously encountered tasks to reduce
+        catastrophic forgetting.
+      </p>
+
+      <p>
+        <strong>Pareto Optimization</strong> is used to balance the competing
+        learning objectives arising during continual training, allowing the
+        model to adapt to the current task while preserving performance on
+        previously learned tasks.
+      </p>
+
+    </section>
+
+
+    <!-- =========================
+         DATASETS
+    ========================== -->
+    <section class="section">
+
+      <h2>Datasets</h2>
+
+      <p>
+        The framework utilizes three curated SMILES-based molecular datasets
+        to evaluate continual learning across molecular property prediction
+        tasks:
+      </p>
+
+      <ol>
+
+        <li>
+          <strong>Sweet or Not Dataset</strong>
+          – molecular taste prediction.
+        </li>
+
+        <li>
+          <strong>Bitter or Not Dataset</strong>
+          – molecular bitterness prediction.
+        </li>
+
+        <li>
+          <strong>Blood-Brain Barrier Permeable or Not (BBBP) Dataset</strong>
+          – blood-brain barrier permeability prediction.
+        </li>
+
+      </ol>
+
+      <p>
+        The datasets are preprocessed using standardized SMILES
+        canonicalization and molecular tokenization to provide consistent
+        molecular representations across sequential learning tasks.
+      </p>
+
+    </section>
+
+
+    <!-- =========================
+         REFRESH LEARNING
+    ========================== -->
+    <section class="section">
+
+      <h2>Refresh Learning</h2>
+
+      <p>
+        During sequential training, representative samples from previously
+        encountered tasks are retained in a bounded memory buffer.
+      </p>
+
+      <p>
+        Refresh Learning periodically revisits these retained samples to
+        reinforce previously learned representations and reduce degradation
+        in performance caused by continual adaptation to new tasks.
+      </p>
+
+      <p>
+        This provides a practical stability mechanism while allowing the model
+        to continue adapting to incoming molecular property prediction tasks.
+      </p>
+
+    </section>
+
+
+    <!-- =========================
+         PARETO OPTIMIZATION
+    ========================== -->
+    <section class="section">
+
+      <h2>Pareto Optimization</h2>
+
+      <p>
+        Continual learning introduces competing objectives: the model must
+        learn the current task effectively while retaining performance on
+        previously learned tasks.
+      </p>
+
+      <p>
+        MTL-PORL applies Pareto-based optimization to balance these competing
+        objectives during model training. Task-specific gradients are
+        combined according to optimized weighting coefficients rather than
+        relying on a fixed manually selected weighting scheme.
+      </p>
+
+      <p>
+        This provides a mechanism for controlling the trade-off between
+        adaptation to new tasks and retention of previously acquired
+        knowledge.
+      </p>
+
+    </section>
+
+
+    <!-- =========================
+         SYSTEM ARCHITECTURE
+    ========================== -->
+    <section class="section">
+
+      <h2>System Architecture</h2>
+
+      <p>
+        The framework comprises four primary modules:
+      </p>
+
+      <ol>
+
+        <li>
+          <strong>Data &amp; Pre-processing Module</strong>
+          – Handles SMILES input, molecular tokenization, preprocessing,
+          and generation of molecular representations.
+        </li>
+
+        <li>
+          <strong>Multi-Task Learner</strong>
+          – Uses ChemBERTa-based models for sequential molecular property
+          prediction across BBBP, Bitter, and Sweet tasks. Pareto-based
+          optimization is used during continual training.
+        </li>
+
+        <li>
+          <strong>Refresh Learning Module</strong>
+          – Maintains a bounded memory buffer containing representative
+          samples from previously encountered tasks and periodically uses
+          these samples to refresh previously learned knowledge.
+        </li>
+
+        <li>
+          <strong>Evaluation Module</strong>
+          – Evaluates continual-learning performance using predictive
+          performance and forgetting-related metrics and provides
+          comparisons with established continual-learning approaches.
+        </li>
+
+        <li>
+          <strong>Application Module</strong>
+          – A computer-implemented application built with FastAPI,
+          featuring Connect, Train, and Inference modules for model training,
+          molecular prediction, visualization, and repository management.
+        </li>
+
+      </ol>
+
+      <p>
+        The resulting system provides an end-to-end platform for evaluating
+        Pareto-based continual learning and Refresh Learning for molecular
+        property prediction.
+      </p>
+
+    </section>
+
+
+    <!-- =========================
+         WORKFLOW
+    ========================== -->
+    <section class="section">
+
+      <h2>Continual Learning Workflow</h2>
+
+      <p>
+        The training process follows a sequential task-learning workflow:
+      </p>
+
+      <ol>
+
+        <li>
+          Train the model on the current molecular property prediction task.
+        </li>
+
+        <li>
+          Retain representative samples from the task in the bounded memory
+          buffer.
+        </li>
+
+        <li>
+          Introduce the next task and continue model adaptation.
+        </li>
+
+        <li>
+          Apply Pareto-based optimization to balance the competing task
+          objectives.
+        </li>
+
+        <li>
+          Periodically perform Refresh Learning using retained samples from
+          previously encountered tasks.
+        </li>
+
+        <li>
+          Evaluate performance across current and previously learned tasks to
+          quantify catastrophic forgetting and generalization.
+        </li>
+
+      </ol>
+
+    </section>
+
+
+    <!-- =========================
+         GALLERY
+    ========================== -->
+    <section class="section">
+
+      <h2>Gallery</h2>
+
+      <div class="images">
+
+        <img src="image1.png" alt="Architecture Overview" />
+
+        <img src="image2.png" alt="Pareto Optimization Process" />
+
+        <img src="image3.png" alt="Multi-Task Learning Flow" />
+
+        <img src="image4.png" alt="MTL-PORL Application Interface" />
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         APP GALLERY
+    ========================== -->
+    <section class="section">
+
+      <h2>App Gallery</h2>
+
+      <div class="images app-images">
+
+        <img src="assets/app1.jpg" alt="Architecture Overview" />
+
+        <img src="assets/app2.jpg" alt="Architecture Overview" />
+
+        <img src="assets/app3.jpg" alt="Pareto Optimization Process" />
+
+        <img src="assets/app4.jpg" alt="Pareto Optimization Process" />
+
+        <img src="assets/app5.jpg" alt="Multi-Task Learning Flow" />
+
+        <img src="assets/app6.jpg" alt="Multi-Task Learning Flow" />
+
+        <img src="assets/app7.jpg" alt="MTL-PORL Application Interface" />
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         LIGHTBOX
+    ========================== -->
+    <div id="lightbox" class="lightbox">
+
+      <span class="close">&times;</span>
+
+      <img
+        id="lightbox-img"
+        src=""
+        alt="Expanded image"
+      />
+
+    </div>
+
+
+    <!-- =========================
+         TRACKER
+    ========================== -->
+    <img
+      src="https://tracker-23fjfq6nka-uc.a.run.app/?id=mtl-porl-webpage"
+      alt=""
+      width="1"
+      height="1"
+      style="display: none"
+    />
+
+
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer>
+      © 2025 MTL-PORL | Developed at IIT BHU, Varanasi
+    </footer>
+
+
+    <!-- =========================
+         LIGHTBOX SCRIPT
+    ========================== -->
+    <script>
+
+      const images = document.querySelectorAll(".images img");
+
+      const lightbox = document.getElementById("lightbox");
+
+      const lightboxImg = document.getElementById("lightbox-img");
+
+      const closeBtn = document.querySelector(".close");
+
+
+      images.forEach((img) => {
+
+        img.addEventListener("click", () => {
+
+          lightbox.style.display = "flex";
+
+          lightboxImg.src = img.src;
+
+        });
+
+      });
+
+
+      closeBtn.addEventListener("click", () => {
+
+        lightbox.style.display = "none";
+
+      });
+
+
+      lightbox.addEventListener("click", (e) => {
+
+        if (e.target === lightbox) {
+
+          lightbox.style.display = "none";
+
+        }
+
+      });
+
+    </script>
+
+  </body>
+</html>
